@@ -1,5 +1,9 @@
 package dh
 
+import (
+	"fmt"
+)
+
 var (
 	// commonPrime      int64   = 1091
 	// commonPrime      int64   = 105929
@@ -11,8 +15,8 @@ var (
 	// commonPrime      int64   = 236893021
 	commonPrime      int64   = 548609707
 	commonSquareRoot float64 = 5
-	aliceSecretKey   float64 = 424124212412
-	bobSecretKey     float64 = 351232133213
+	AliceSecretKey   float64 = 424124212412
+	BobSecretKey     float64 = 351232133213
 	// commonSquareRoot float64 = 9
 )
 
@@ -44,17 +48,18 @@ func MixSecretKeys(receivedMixKey int64, ownSecretKey float64) int64 {
 
 // TestDH 测试DH功能完整性
 func TestDH() {
-	PrintSecretKeys(aliceSecretKey, bobSecretKey)
+	PrintSecretKeys(AliceSecretKey, BobSecretKey)
 
-	aliceMixedKey := MixKeys(aliceSecretKey)
-	bobMixedKey := MixKeys(bobSecretKey)
+	aliceMixedKey := MixKeys(AliceSecretKey)
+	bobMixedKey := MixKeys(BobSecretKey)
 
 	PrintMixedKeys(aliceMixedKey, bobMixedKey)
 
 	PrintKeyExchange(aliceMixedKey, bobMixedKey)
 
-	aliceMixedSecret := MixSecretKeys(bobMixedKey, aliceSecretKey)
-	bobMixedSecret := MixSecretKeys(aliceMixedKey, bobSecretKey)
+	aliceMixedSecret := MixSecretKeys(bobMixedKey, AliceSecretKey)
+	bobMixedSecret := MixSecretKeys(aliceMixedKey, BobSecretKey)
 
 	PrintCommonSecretKey(aliceMixedSecret, bobMixedSecret)
+	fmt.Println("DH模块初始化完成")
 }
