@@ -5,4 +5,4 @@ Diffie-Hellman with Gin
 
 代办list:
 
-前段页面，会话存储
+前端页面

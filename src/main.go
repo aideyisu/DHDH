@@ -38,6 +38,13 @@ var ADLER32 int = 0
 var CRC32 int = 1
 
 func main() {
+	var HistoryMessage [5]string
+	HistoryMessage[0] = "None"
+	HistoryMessage[1] = "None"
+	HistoryMessage[2] = "None"
+	HistoryMessage[3] = "None"
+	HistoryMessage[4] = "None"
+
 	addrs, err := net.InterfaceAddrs()
 	if err != nil {
 		fmt.Println(err)
@@ -122,6 +129,21 @@ func main() {
 		EncrData := aes.AesEncrypt([]byte(CRYPT_KEY_128), []byte("1234567890qwertyu"), []byte(param.Message))
 		OrigData := aes.AesDecrypt([]byte(CRYPT_KEY_128), []byte("1234567890qwertyu"), EncrData)
 
+		K := 0
+		for i := 0; i < 5; i++ {
+			if HistoryMessage[i] == "None" {
+				HistoryMessage[i] = "红烧牛肉to醋溜砖头 : " + param.Message
+				K = 1
+				break
+			}
+		}
+		if K == 0 {
+			HistoryMessage[0] = HistoryMessage[1]
+			HistoryMessage[1] = HistoryMessage[2]
+			HistoryMessage[2] = HistoryMessage[3]
+			HistoryMessage[3] = HistoryMessage[4]
+			HistoryMessage[4] = "红烧牛肉to醋溜砖头 : " + param.Message
+		}
 		c.JSON(200, gin.H{
 			"加密Message": string(EncrData),
 			"红烧牛肉to醋溜砖头验证解密信息": string(OrigData),
@@ -140,11 +162,36 @@ func main() {
 		}
 		EncrData := aes.AesEncrypt([]byte(CRYPT_KEY_128), []byte("1234567890qwertyu"), []byte(param.Message))
 		OrigData := aes.AesDecrypt([]byte(CRYPT_KEY_128), []byte("1234567890qwertyu"), EncrData)
-
+		K := 0
+		for i := 0; i < 5; i++ {
+			if HistoryMessage[i] == "None" {
+				HistoryMessage[i] = "醋溜砖头to红烧牛肉 : " + param.Message
+				K = 1
+				break
+			}
+		}
+		if K == 0 {
+			HistoryMessage[0] = HistoryMessage[1]
+			HistoryMessage[1] = HistoryMessage[2]
+			HistoryMessage[2] = HistoryMessage[3]
+			HistoryMessage[3] = HistoryMessage[4]
+			HistoryMessage[4] = "醋溜砖头to红烧牛肉 : " + param.Message
+		}
 		c.JSON(200, gin.H{
 			"加密Message": string(EncrData),
 			"醋溜砖头to红烧牛肉验证解密信息": string(OrigData),
 			"源信息": param.Message,
+		})
+	})
+
+	r.GET("/history", func(c *gin.Context) {
+
+		c.JSON(200, gin.H{
+			"最近的一条消息": HistoryMessage[4],
+			"第二条消息":   HistoryMessage[3],
+			"第三条消息":   HistoryMessage[2],
+			"第四条消息":   HistoryMessage[1],
+			"第五条消息":   HistoryMessage[0],
 		})
 	})
 
