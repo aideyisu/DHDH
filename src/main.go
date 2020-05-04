@@ -103,6 +103,13 @@ func main() {
 	fmt.Println("初始化完成")
 	fmt.Printf("\n欢迎来到红烧牛肉和醋溜砖头的爱恨情仇\n")
 	r := gin.Default()
+	r.LoadHTMLGlob("templates/*")
+
+	r.GET("/index", func(c *gin.Context) {
+		c.HTML(200, "index.html", gin.H{
+			"title": "Main site",
+		})
+	})
 
 	r.GET("/info", func(c *gin.Context) {
 
