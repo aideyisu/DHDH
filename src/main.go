@@ -105,6 +105,10 @@ func main() {
 	r := gin.Default()
 	r.LoadHTMLGlob("templates/*")
 
+	r.GET("/test", func(c *gin.Context) {
+		c.HTML(200, "test.html", gin.H{})
+	})
+
 	r.GET("/index", func(c *gin.Context) {
 		c.HTML(200, "index.html", gin.H{
 			"title": "Main site",
@@ -113,13 +117,13 @@ func main() {
 
 	r.GET("/info", func(c *gin.Context) {
 
-		c.JSON(200, gin.H{
-			"红烧牛肉-初始秘钥": dh.AliceSecretKey,
-			"醋溜砖头-初始秘钥": dh.BobSecretKey,
-			"红烧牛肉-混合秘钥": aliceMixedKey,
-			"醋溜砖头-混合秘钥": bobMixedKey,
-			"红烧牛肉-最终秘钥": aliceMixedSecret,
-			"醋溜砖头-最终秘钥": bobMixedSecret,
+		c.HTML(200, "info.html", gin.H{
+			"HsSKey": dh.AliceSecretKey,
+			"ClSKey": dh.BobSecretKey,
+			"HsMKey": aliceMixedKey,
+			"ClMKey": bobMixedKey,
+			"HsFKey": aliceMixedSecret,
+			"ClFKey": bobMixedSecret,
 		})
 	})
 
