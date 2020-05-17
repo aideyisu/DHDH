@@ -111,7 +111,7 @@ func main() {
 
 	r.GET("/index", func(c *gin.Context) {
 		c.HTML(200, "index.html", gin.H{
-			"title": "Main site",
+			"title": "Diffie Hellman Example",
 		})
 	})
 
@@ -127,6 +127,53 @@ func main() {
 		})
 	})
 
+	r.GET("/talk", func(c *gin.Context) {
+		type Param struct {
+			Sender   string
+			Receiver string
+			Message  string
+		}
+		var param Param
+
+		if err := c.ShouldBind(&param); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"status_code": 400, "reason": fmt.Sprint(err.Error())})
+			return // exit on first error
+		}
+		fmt.Println(param.Message)
+		EncrData := aes.AesEncrypt([]byte(CRYPT_KEY_128), []byte("1234567890qwertyu"), []byte(param.Message))
+		OrigData := aes.AesDecrypt([]byte(CRYPT_KEY_128), []byte("1234567890qwertyu"), EncrData)
+
+		K := 0
+		for i := 0; i < 5; i++ {
+			if HistoryMessage[i] == "None" {
+				HistoryMessage[i] = param.Sender + "->" + param.Receiver + ":" + param.Message
+				K = 1
+				break
+			}
+		}
+		if K == 0 {
+			HistoryMessage[0] = HistoryMessage[1]
+			HistoryMessage[1] = HistoryMessage[2]
+			HistoryMessage[2] = HistoryMessage[3]
+			HistoryMessage[3] = HistoryMessage[4]
+			HistoryMessage[4] = param.Sender + "->" + param.Receiver + ":" + param.Message
+		}
+		c.HTML(200, "talk.html", gin.H{
+			"EncryptMessage": EncrData,
+			"DecryptMessage": string(OrigData),
+			"OriMessage":     param.Message,
+			"LastOne":        HistoryMessage[0],
+			"LastTwo":        HistoryMessage[1],
+			"LastThree":      HistoryMessage[2],
+			"LastFour":       HistoryMessage[3],
+			"LastFive":       HistoryMessage[4],
+		})
+	})
+
+	r.GET("/pre", func(c *gin.Context) {
+		c.HTML(200, "pre.html", gin.H{})
+	})
+
 	r.GET("/BtoC", func(c *gin.Context) {
 		type Param struct {
 			Message string
@@ -137,8 +184,9 @@ func main() {
 			c.JSON(http.StatusBadRequest, gin.H{"status_code": 400, "reason": fmt.Sprint(err.Error())})
 			return // exit on first error
 		}
-		EncrData := aes.AesEncrypt([]byte(CRYPT_KEY_128), []byte("1234567890qwertyu"), []byte(param.Message))
-		OrigData := aes.AesDecrypt([]byte(CRYPT_KEY_128), []byte("1234567890qwertyu"), EncrData)
+
+		EncrData := aes.AesEncrypt([]byte(CRYPT_KEY_128), []byte("199269252"), []byte(param.Message))
+		OrigData := aes.AesDecrypt([]byte(CRYPT_KEY_128), []byte("199269252"), EncrData)
 
 		K := 0
 		for i := 0; i < 5; i++ {

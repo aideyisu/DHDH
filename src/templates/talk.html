@@ -1,0 +1,61 @@
+<html>
+
+<head>
+    <script type="text/javascript">
+        function myLinkFor() {
+            var newURL = document.getElementById("targetURL").value;
+            window.location.href = "http://localhost:8080/talk?Sender=Sh&Receiver=Cl&Message=" + newURL;
+        }
+        function myLinkFor2() {
+                var newURL = document.getElementById("targetURL2").value;
+                window.location.href = "http://localhost:8080/talk?Sender=Cl&Receiver=Sh&Message=" + newURL;
+        }
+    </script>
+</head>
+
+<body>
+    <h3>通信中</h3>
+    红烧牛肉向醋溜砖头发送消息:<input type="text" id="targetURL" /><input type="button" name="myBtn" value="发送"
+        onclick="javascript:myLinkFor()" />
+
+</body>
+
+<body>
+    醋溜砖头向红烧牛肉发送消息:<input type="text" id="targetURL2" /><input type="button" name="myBtn" value="发送"
+        onclick="javascript:myLinkFor2()" />
+
+</body>
+<body>
+
+    <h3>
+        通信信息
+    </h3>
+    <p>
+        加密信息 : {{  .EncryptMessage  }}
+    </p>
+    <p>
+        解密信息 : {{  .DecryptMessage  }}
+    </p>
+
+    <h3>
+        历史信息
+    </h3>
+    <p>
+        第一条: {{  .LastOne  }}
+    </p>
+    <p>
+        第二条: {{  .LastTwo  }}
+    </p>
+    <p>
+        第三条: {{  .LastThree  }}
+    </p>
+    <p>
+        第四条: {{  .LastFour  }}
+    </p>
+    <p>
+        第五条: {{  .LastFive  }}
+    </p>
+
+</body>
+
+</html>
