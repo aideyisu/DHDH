@@ -7,14 +7,12 @@ go build main.go
 ./main
 随后http://localhost:8080/index 打开食用即可～
 
-代办list:
-暂无
-
 docx内容:
 1 介绍界面每个使用顺序，每一步干什么
 2 介绍核心代码
 
 项目路径一览
+```
  DHDH
 ├── 学号姓名DH大作业.docx - 脱敏=。=
 ├── README.md
@@ -42,4 +40,5 @@ docx内容:
         └── test.html
 
 7 directories, 17 files
+```
 
