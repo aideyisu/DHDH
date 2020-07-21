@@ -2,8 +2,10 @@
 Diffie-Hellman with Gin
 
 ## 使用简介:
+```
 go build main.go
 ./main
+```
 随后http://localhost:8080/index 打开食用即可～
 
 ## Diffie-Hellman原理
